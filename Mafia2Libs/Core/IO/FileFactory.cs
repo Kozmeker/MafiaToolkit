@@ -82,6 +82,8 @@ namespace Core.IO
                     return new FileRoadmapClassic(info);
                 case "IFL":
                     return new FileIFL(info);
+                case "EFF":
+                    return new FileEff(info);
                 default:
                     return new FileBase(info);
             }
