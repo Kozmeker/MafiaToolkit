@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using ResourceTypes.Effects.DataBlocks;
+using ResourceTypes.Effects.DataBlocks.Emitter;
 using Utils.Logging;
 
 namespace ResourceTypes.Effects;
@@ -61,16 +62,13 @@ public class EffectsLoader
             effectList.Add(new Effect(reader));
         }
         ToolkitAssert.Ensure(reader.BaseStream.Position == reader.BaseStream.Length, "This is not the end of the file.");
-        effects = new Effect[effectList.Count];
-        for (int i = 0; i < effectList.Count; i++)//will rework
-        {
-            effects[i] = effectList[i];
-        }
+        effects = effectList.ToArray();
     }
 
     public class Effect
     {
         public int EffectID { get; set; }
+        public string EmitterNames { get; set; }
         public int EffectSize { get; set; }
 
         public Emitter EmitterData;
@@ -98,6 +96,10 @@ public class EffectsLoader
                     EmitterData = new Emitter();
                     EmitterData.ReadFromFile(emitterReader);
                 }
+
+                EmitterNames = string.Join(", ", EmitterData.EmitterNames);
+                
+                
                 int generationSize = reader.ReadInt32();
                 reader.BaseStream.Seek(-4, SeekOrigin.Current);
                 using (BinaryReader generationReader = new(new MemoryStream(reader.ReadBytes(generationSize))))

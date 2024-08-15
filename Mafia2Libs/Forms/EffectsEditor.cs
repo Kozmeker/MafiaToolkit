@@ -33,9 +33,9 @@ public partial class EffectsEditor : Form
         Button_Exit.Text = Language.GetString("$EXIT");
     }
     
-    private void AddCutsceneToTreeView(EffectsLoader.Effect effect)
+    private void AddEffectToTreeView(EffectsLoader.Effect effect)
     {
-        TreeNode EffectParent = new TreeNode("Effect ID: " + effect.EffectID);
+        TreeNode EffectParent = new TreeNode("Effect ID: " + effect.EffectID +" ,Emitters: " + effect.EmitterNames);
         EffectParent.Tag = effect;
 
         if (effect.EmitterData != null)
@@ -87,7 +87,7 @@ public partial class EffectsEditor : Form
 
         for (int i = 0; i < Effects.Length; i++)
         {
-            AddCutsceneToTreeView(Effects[i]);
+            AddEffectToTreeView(Effects[i]);
         }
     }
     
@@ -97,7 +97,7 @@ public partial class EffectsEditor : Form
         TreeView_Effects.SelectedNode = null;
         TreeView_Effects.Nodes.Clear();
         BuildData();
-        Text = Language.GetString("$CUTSCENE_EDITOR");
+        Text = Language.GetString("$EFFECTS_EDITOR");
         bIsFileEdited = false;
     }
     

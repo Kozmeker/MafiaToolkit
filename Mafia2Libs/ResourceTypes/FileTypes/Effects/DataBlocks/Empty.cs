@@ -10,7 +10,7 @@ public class Empty
     public void ReadFromFile(BinaryReader br)
     {
         EmptySize = br.ReadInt32();
-        if (br.BaseStream.Position != br.BaseStream.Length)//otherwise this is the end of the file
+        if (br.BaseStream.Position != br.BaseStream.Length)//otherwise this is the end of the file that doesnt have unk
         {
             Unk = br.ReadInt32();
         }
