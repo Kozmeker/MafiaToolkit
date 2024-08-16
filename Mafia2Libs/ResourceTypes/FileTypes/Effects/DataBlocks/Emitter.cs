@@ -7,7 +7,7 @@ namespace ResourceTypes.Effects.DataBlocks.Emitter;
 public class Emitter
 {
     public int EmitterSize { get; set; }
-    public int Unk100 { get; set; }
+    public int Const100 { get; set; }//probably always 100
     public List<string> EmitterNames { get; set; }
 
     private List<EmitterSubBlock> emitterSubBlocklist;//wip
@@ -21,7 +21,7 @@ public class Emitter
     public void ReadFromFile(BinaryReader br)
     {
         EmitterSize = br.ReadInt32();
-        Unk100 = br.ReadInt32();
+        Const100 = br.ReadInt32();
         
         emitterSubBlocklist = new List<EmitterSubBlock>();
         while (br.BaseStream.Position < EmitterSize)

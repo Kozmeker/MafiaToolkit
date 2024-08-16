@@ -49,6 +49,18 @@ public partial class EffectsEditor : Form
             TreeNode AssetsParent = new TreeNode("Emitter DataBlock Content");
 
             AssetsParent.Tag = Assets;
+            for (int i = 0; i < Assets.EmitterSubBlocks.Length; i++)
+            {
+                var Asset = Assets.EmitterSubBlocks[i];
+                TreeNode AssetNode = new TreeNode(string.Format("{0}: {1}", Asset.GetType().Name, i));
+                if (Asset.EmitterString!= null)
+                {
+                    AssetNode = new TreeNode(string.Format("{0}: {1}", Asset.GetType().Name, i)+": "+ Asset.EmitterString);
+                }
+                AssetNode.Tag = Asset;
+
+                AssetsParent.Nodes.Add(AssetNode);
+            }
 
             EffectParent.Nodes.Add(AssetsParent);
         }
@@ -69,7 +81,15 @@ public partial class EffectsEditor : Form
             TreeNode AssetsParent = new TreeNode("Sound DataBlock Content");
 
             AssetsParent.Tag = Assets;
+            for (int i = 0; i < Assets.SoundSubBlocks.Length; i++)
+            {
+                var Asset = Assets.SoundSubBlocks[i];
+                TreeNode AssetNode = new TreeNode(string.Format("{0}: {1}", Asset.GetType().Name, i));
+                AssetNode.Tag = Asset;
 
+                AssetsParent.Nodes.Add(AssetNode);
+            }
+            
             EffectParent.Nodes.Add(AssetsParent);
         }
         
