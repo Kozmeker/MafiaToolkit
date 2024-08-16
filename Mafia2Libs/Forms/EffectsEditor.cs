@@ -36,6 +36,11 @@ public partial class EffectsEditor : Form
     private void AddEffectToTreeView(EffectsLoader.Effect effect)
     {
         TreeNode EffectParent = new TreeNode("Effect ID: " + effect.EffectID +" ,Emitters: " + effect.EmitterNames);
+        if (effect.EmitterNames.Equals(""))
+        {
+            EffectParent = new TreeNode("Effect ID: " + effect.EffectID);
+        }
+        
         EffectParent.Tag = effect;
 
         if (effect.EmitterData != null)

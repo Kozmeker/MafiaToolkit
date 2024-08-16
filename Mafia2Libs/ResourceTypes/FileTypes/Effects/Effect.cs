@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using ResourceTypes.Effects.DataBlocks;
 using ResourceTypes.Effects.DataBlocks.Emitter;
@@ -70,6 +71,16 @@ public class EffectsLoader
         public int EffectID { get; set; }
         public string EmitterNames { get; set; }
         public int EffectSize { get; set; }
+        public int version { get; set; }
+        public int unk0 { get; set; }
+        public Block20 block20 { get; set; }
+        public Block12f block12F1 { get; set; }
+        public Block12f block12F2 { get; set; }
+        public Block12f block12F3 { get; set; }
+        public Block12i block12i1 { get; set; }
+        public Block32 block32 { get; set; }
+        public Block12f block12F4 { get; set; }
+        public Block12i block12i2 { get; set; }
 
         public Emitter EmitterData;
         public Generation GenerationData;
@@ -84,10 +95,19 @@ public class EffectsLoader
         public void ReadFromFile(BinaryReader reader)
         {
                 EffectSize = reader.ReadInt32();
-                int version = reader.ReadInt32();//version?
+                version = reader.ReadInt32();//version?
                 EffectID = reader.ReadInt32();
-                int unk1 = reader.ReadInt32();
-                reader.BaseStream.Seek(124, SeekOrigin.Current);//dont care now
+                unk0 = reader.ReadInt32();
+                block20 = new Block20(reader);
+                block12F1 = new Block12f(reader);
+                block12F2 = new Block12f(reader);
+                block12F3 = new Block12f(reader);
+                block12i1 = new Block12i(reader);
+                block32 = new Block32(reader);
+                block12F4 = new Block12f(reader);
+                block12i2 = new Block12i(reader);
+                
+                //reader.BaseStream.Seek(124, SeekOrigin.Current);//dont care now
                 
                 int emitterSize = reader.ReadInt32();
                 reader.BaseStream.Seek(-4, SeekOrigin.Current);//make function getblocksize as this will be common
@@ -127,6 +147,92 @@ public class EffectsLoader
                     }
                 }
                 
+        }
+        
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public class Block32
+        {
+            public float float1 { get; set; }
+            public float float2 { get; set; }
+            public float float3 { get; set; } 
+            public float float4 { get; set; }
+            public float float5 { get; set; }
+            public float float6 { get; set; }
+            public int unk { get; set; }
+
+            public Block32(BinaryReader br)
+            {
+                ReadFromFile(br);
+            }
+            public void ReadFromFile(BinaryReader br)
+            {
+                int blocksize = br.ReadInt32();//must be 32
+                float1 = br.ReadSingle();
+                float2 = br.ReadSingle();
+                float3 = br.ReadSingle();
+                float4 = br.ReadSingle();
+                float5 = br.ReadSingle();
+                float6 = br.ReadSingle();
+                unk = br.ReadInt32();
+            }
+        }
+        
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public class Block20
+        {
+            public float float1 { get; set; }
+            public float float2 { get; set; }
+            public float float3 { get; set; }
+            public int unk { get; set; }
+
+            public Block20(BinaryReader br)
+            {
+                ReadFromFile(br);
+            }
+            public void ReadFromFile(BinaryReader br)
+            {
+                int blocksize = br.ReadInt32();//must be 20
+                float1 = br.ReadSingle();
+                float2 = br.ReadSingle();
+                float3 = br.ReadSingle();
+                unk = br.ReadInt32();
+            }
+        }
+        
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public class Block12f
+        {
+            public float float1 { get; set; }
+            public int unk { get; set; }
+
+            public Block12f(BinaryReader br)
+            {
+                ReadFromFile(br);
+            }
+            public void ReadFromFile(BinaryReader br)
+            {
+                int blocksize = br.ReadInt32();//must be 12
+                float1 = br.ReadSingle();
+                unk = br.ReadInt32();
+            }
+        }
+        
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public class Block12i
+        {
+            public int unk0 { get; set; }//it rarely has values, but it doesn't appear to be float
+            public int unk1 { get; set; }
+
+            public Block12i(BinaryReader br)
+            {
+                ReadFromFile(br);
+            }
+            public void ReadFromFile(BinaryReader br)
+            {
+                int blocksize = br.ReadInt32();//must be 12
+                unk0 = br.ReadInt32();
+                unk1 = br.ReadInt32();
+            }
         }
     }
     
